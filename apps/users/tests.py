@@ -45,3 +45,35 @@ class UserRegistrationTests(APITestCase):
         self.assertNotEqual(user.password, 'securepassword123')
         self.assertTrue(user.check_password('securepassword123'))
         print("    [OK] Password is securely hashed")
+
+class UserAuthenticationTests(APITestCase):
+    def setUp(self):
+        self.login_url = reverse('token_obtain_pair')
+        self.user_data = {
+            'username': 'authtestuser',
+            'password': 'authpassword123',
+            'role': 'DOCTOR'
+        }
+        self.user = User.objects.create_user(**self.user_data)
+
+    def test_user_can_login(self):
+        """Test that a valid user can login and receive JWT tokens."""
+        print("\n--> TEST: Login with valid credentials")
+        response = self.client.post(self.login_url, {
+            'username': self.user_data['username'],
+            'password': self.user_data['password']
+        })
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('access', response.data)
+        self.assertIn('refresh', response.data)
+        print("    [OK] Login successful, tokens received")
+
+    def test_user_cannot_login_invalid_credentials(self):
+        """Test login fails with wrong password."""
+        print("\n--> TEST: Login with invalid credentials")
+        response = self.client.post(self.login_url, {
+            'username': self.user_data['username'],
+            'password': 'wrongpassword'
+        })
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        print("    [OK] Invalid login rejected")
