@@ -1,11 +1,19 @@
+
+# Security
+.env
+
 # Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+
+# Database
+db.sqlite3
 *.sqlite3
 
 # Virtualenv
+venv/
 venv_agm_bk/
 env/
 ENV/
@@ -14,8 +22,8 @@ ENV/
 *.log
 *.pot
 *.py[cod]
-db.sqlite3
 /staticfiles/
+/media/
 
 # IDE
 .vscode/
