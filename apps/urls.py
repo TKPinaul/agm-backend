@@ -1,6 +1,9 @@
 from django.urls import path, include
 
 urlpatterns = [
-    path('users/', include('apps.users.urls')),
-    path('core/', include('apps.core.urls')),
+    # Gestion des utilisateurs
+    path('users-controls/', include('apps.users.urls')),
+    
+    
+    # path('core/', include('apps.core.urls')),
 ]
